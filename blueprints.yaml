@@ -8,10 +8,10 @@ author:
   name: Ersei Saggi
   email: contact@ersei.net
 homepage: https://git.sr.ht/~fd/grav-plugin-staticmath
-demo: http://demo.yoursite.com
+demo: https://ersei.net
 keywords: grav, plugin, etc
-bugs: https://github.com/ersei-saggi/grav-plugin-mathml/issues
-docs: https://github.com/ersei-saggi/grav-plugin-mathml/blob/develop/README.md
+bugs: https://todo.sr.ht/~fd/grav-plugin-staticmath
+docs: https://git.sr.ht/~fd/grav-plugin-staticmath/tree/main/item/README.md
 license: MIT
 
 dependencies:
