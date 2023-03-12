@@ -1,12 +1,19 @@
-# staticmath Plugin
+- [Grav StaticMath Plugin](https://git.sr.ht/~fd/grav-plugin-staticmath)
+- [StaticMath Server](https://git.sr.ht/~fd/staticmath-server)
+- [Issues](https://todo.sr.ht/~fd/grav-plugin-staticmath)
+- [Mailing List](https://lists.sr.ht/~fd/grav-plugin-staticmath)
 
-**This README.md file should be modified to describe the features, installation, configuration, and general usage of the plugin.**
+# Grav StaticMath Plugin
 
-The **staticmath** Plugin is an extension for [Grav CMS](https://github.com/getgrav/grav). Converts LaTeX to staticmath
+The **StaticMath** Plugin is an extension for [Grav CMS](https://github.com/getgrav/grav). This plugin converts LaTeX to static math (with some CSS) using server-side [KaTeX](https://katex.org).
 
 ## Installation
 
-Installing the staticmath plugin can be done in one of three ways: The GPM (Grav Package Manager) installation method lets you quickly install the plugin with a simple terminal command, the manual method lets you do so via a zip file, and the admin method lets you do so via the Admin Plugin.
+Installing the StaticMath plugin can be done in one of three ways: The GPM (Grav Package Manager) installation method lets you quickly install the plugin with a simple terminal command, the manual method lets you do so via a zip file, and the admin method lets you do so via the Admin Plugin.
+
+### Server (Required)
+
+Install the [StaticMath server](https://git.sr.ht/~fd/staticmath-server) first.
 
 ### GPM Installation (Preferred)
 
@@ -24,8 +31,6 @@ You should now have all the plugin files under
 
     /your/site/grav/user/plugins/staticmath
 	
-> NOTE: This plugin is a modular component for Grav which may require other plugins to operate, please see its [blueprints.yaml-file on GitHub](https://github.com//grav-plugin-staticmath/blob/main/blueprints.yaml).
-
 ### Admin Plugin
 
 If you use the Admin Plugin, you can install the plugin directly by browsing the `Plugins`-menu and clicking on the `Add` button.
@@ -38,19 +43,33 @@ Here is the default configuration and an explanation of available options:
 
 ```yaml
 enabled: true
+built_in_css: true # Uses built-in KaTeX CSS
+active: false # Whether the plugin is active on a page
+server: "http://localhost:3000" # The location of the StaticMath server
+delimiters:
+  inline:                 # Inline delimiters
+    '\(': '\)'            # - MathJax/KaTeX
+    '$': '$'              # - LaTeX
+
+  block:                  # Block delimiters
+    '\[': '\]'            # - MathJax/KaTeX
+    '$$': '$$'            # - LaTeX
 ```
 
 Note that if you use the Admin Plugin, a file with your configuration named staticmath.yaml will be saved in the `user/config/plugins/`-folder once the configuration is saved in the Admin.
 
 ## Usage
 
-**Describe how to use the plugin.**
+Wherever you want LaTeX code in your server, use the delimiters set in the configuration, like so:
+
+```markdown
+$$
+\text{This is a block of LaTeX code}
+$$
+
+And $\text{this}$ is inline LaTeX code.
+```
 
 ## Credits
 
-**Did you incorporate third-party code? Want to thank somebody?**
-
-## To Do
-
-- [ ] Future plans, if any
-
+Much thanks to [KaTeX](https://katex.org) for rendering the math, the [Grav MathJax Plugin](https://github.com/Sommerregen/grav-plugin-mathjax) for giving me a base to build off of, and the [Grav ZMarkdown Plugin](https://github.com/AmauryCarrade/grav-plugin-zmarkdown-engine) to give me pointers for how to do networking in PHP.
