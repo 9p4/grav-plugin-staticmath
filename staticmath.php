@@ -69,8 +69,7 @@ class StaticmathPlugin extends Plugin
         ]);
 	}
 
-	    /**
-     * Extend page blueprints with MathJax configuration options.
+    /**
      *
      * @param Event $event
      */
@@ -100,7 +99,6 @@ class StaticmathPlugin extends Plugin
 	}
 
 	/**
-     * Set needed variables to display MathJax LaTeX formulas.
      */
     public function onTwigSiteVariables()
     {

@@ -4,13 +4,13 @@ form:
       fields:
         options:
           fields:
-            mathjax:
+            staticmath:
               type: section
               title: PLUGINS.STATICMATH.STATICMATH
               underline: true
 
               fields:
-                header.mathjax.active:
+                header.staticmath.active:
                   type: toggle
                   label: PLUGINS.STATICMATH.ACTIVE
                   toggleable: true

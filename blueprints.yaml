@@ -27,7 +27,7 @@ form:
       class: subtle
 
       fields:
-        mathjax:
+        staticmath:
           type: tab
           title: PLUGINS.STATICMATH.STATICMATH
 

@@ -67,9 +67,6 @@ class Staticmath
                         'end' => $end,
                         'element' => [
                             'name' => 'p',
-                            'attributes' => [
-                                'class' => 'mathjax mathjax--block'
-                            ],
                             'text' => [],
                         ]
                     ];
@@ -124,22 +121,19 @@ class Staticmath
 
                 if (preg_match('/^(' . $begin . ')[ ]*(.+?)[ ]*(' . $end . ')/s', $excerpt['text'], $matches))
                 {
-                    $text = preg_replace("/[\pZ\pC]+/u", ' ', '\\(' . $matches[2] . '\\)');
+                    $text = $this->parseLatex(preg_replace("/[\pZ\pC]+/u", ' ', $matches[2]));
                     $block = [
                         'extent' => strlen($matches[0]),
                         'begin' => $matches[1],
                         'end' => $matches[3],
                         'element' => [
                             'name' => 'span',
-                            'attributes' => [
-                                'class' => 'mathjax mathjax--inline'
-                            ],
                             'text' => $text
                         ]
                     ];
 
                     $block['element']['text'] = $text;
-					$block['markup'] = "hey :0";
+					$block['markup'] = $block['element']['text'];
                     return $block;
                 }
             }
