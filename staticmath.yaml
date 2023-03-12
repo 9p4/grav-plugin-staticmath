@@ -1,2 +1,11 @@
 enabled: true
-text_var: Custom Text added by the **staticmath** plugin (disable plugin to remove)
+built_in_css: true
+server: "http://localhost:3000"
+delimiters:
+  inline:                 # Inline delimiters
+    '\(': '\)'            # - MathJax/KaTeX
+    '$': '$'              # - LaTeX
+
+  block:                  # Block delimiters
+    '\[': '\]'            # - MathJax/KaTeX
+    '$$': '$$'            # - LaTeX

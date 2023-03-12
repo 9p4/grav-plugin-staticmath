@@ -3,6 +3,9 @@ namespace Grav\Plugin;
 
 use Composer\Autoload\ClassLoader;
 use Grav\Common\Plugin;
+use RocketTheme\Toolbox\Event\Event;
+use Grav\Common\Page\Page;
+use Grav\Common\Data\Blueprints;
 
 /**
  * Class StaticmathPlugin
@@ -10,6 +13,8 @@ use Grav\Common\Plugin;
  */
 class StaticmathPlugin extends Plugin
 {
+
+	protected $staticmath;
     /**
      * @return array
      *
@@ -23,11 +28,8 @@ class StaticmathPlugin extends Plugin
     public static function getSubscribedEvents(): array
     {
         return [
-            'onPluginsInitialized' => [
-                // Uncomment following line when plugin requires Grav < 1.7
-                // ['autoload', 100000],
-                ['onPluginsInitialized', 0]
-            ]
+            'onPluginsInitialized' => ['onPluginsInitialized', 0]
+            
         ];
     }
 
@@ -48,33 +50,73 @@ class StaticmathPlugin extends Plugin
     {
         // Don't proceed if we are in the admin plugin
         if ($this->isAdmin()) {
+			$this->active = false;
+            $this->enable([
+                'onBlueprintCreated' => ['onBlueprintCreated', 0]
+            ]);
             return;
         }
+
+		require_once(__DIR__ . '/classes/Staticmath.php');
+		$this->staticmath = new Staticmath();
 
         // Enable the main events we are interested in
         $this->enable([
             // Put your main events here
+			'onShortcodesInitialized' => ['onShortcodesInitialized', 0],
 			'onMarkdownInitialized' => ['onMarkdownInitialized', 0],
+			'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
         ]);
 	}
 
-	public function onPageContentProcessed(Event $e) {
-		 /** @var Page $page */
-        $page = $e['page'];
+	    /**
+     * Extend page blueprints with MathJax configuration options.
+     *
+     * @param Event $event
+     */
+    public function onBlueprintCreated(Event $event)
+    {
+        /** @var Blueprints $blueprint */
+        $blueprint = $event['blueprint'];
+
+        if ($blueprint->get('form/fields/tabs')) {
+            $blueprints = new Blueprints(__DIR__ . '/blueprints');
+            $extends = $blueprints->get($this->name);
+            $blueprint->extend($extends, true);
+        }
+    }
+
+	public function onMarkdownInitialized(Event $event) {
+        /** @var Page $page */
+        $page = $this->grav['page'];
+
+        // Skip if active is set to false
         $config = $this->mergeConfig($page);
-
-        $this->active = $config->get('active', true);
-
-        // If the plugin is not active (either global or on page), exit.
-        if (!$this->active) return;
-
-        // We now check if we should render the content using ZMD.
-        $header = $page->header();
-        $should_process_zmarkdown = isset($header->process) && isset($header->process['zmarkdown']) ? (bool) $header->process['zmarkdown'] : null;
-
+        if (!($config->get('enabled') && $config->get('active'))) {
+            return;
+        }
+		$markdown = $event['markdown'];
+		$this->staticmath->setupMarkdown($markdown);
 	}
 
-	public function onMarkdownInitialized(Event $e) {
+	/**
+     * Set needed variables to display MathJax LaTeX formulas.
+     */
+    public function onTwigSiteVariables()
+    {
+        /** @var Page $page */
+        $page = $this->grav['page'];
 
-	}
+        // Skip if active is set to false
+        $config = $this->mergeConfig($page);
+        if (!($config->get('enabled') && $config->get('active'))) {
+            return;
+        }
+
+        $this->staticmath->enabled(true);
+
+        if ($this->config->get('plugins.staticmath.built_in_css')) {
+            $this->grav['assets']->add('plugins://staticmath/assets/css/katex.min.css');
+        }
+    }
 }

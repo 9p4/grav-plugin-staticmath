@@ -1,4 +1,10 @@
 en:
-  PLUGIN_STATICMATH:
-    TEXT_VARIABLE: Text Variable
-    TEXT_VARIABLE_HELP: Text to add to the top of a page
+  PLUGINS:
+    STATICMATH:
+      STATICMATH: "StaticMath"
+      BUILTIN_CSS: "Use built in CSS"
+      BASIC_CONFIGURATION: "Basic configuration"
+      ACTIVE: "Activate StaticMath on page"
+      DELIMITERS:
+        BLOCK: 'LaTeX block delimiters'
+        INLINE: 'LaTeX inline delimiters'
