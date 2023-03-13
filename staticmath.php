@@ -60,19 +60,16 @@ class StaticmathPlugin extends Plugin
 		require_once(__DIR__ . '/classes/Staticmath.php');
 		$this->staticmath = new Staticmath();
 
+        $weight = $this->config->get('plugins.staticmath.weight', -5);
+
         // Enable the main events we are interested in
         $this->enable([
             // Put your main events here
-			'onShortcodesInitialized' => ['onShortcodesInitialized', 0],
-			'onMarkdownInitialized' => ['onMarkdownInitialized', 0],
+			'onPageContentRaw' => ['onPageContentRaw', 0],
 			'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
         ]);
 	}
 
-    /**
-     *
-     * @param Event $event
-     */
     public function onBlueprintCreated(Event $event)
     {
         /** @var Blueprints $blueprint */
@@ -85,21 +82,6 @@ class StaticmathPlugin extends Plugin
         }
     }
 
-	public function onMarkdownInitialized(Event $event) {
-        /** @var Page $page */
-        $page = $this->grav['page'];
-
-        // Skip if active is set to false
-        $config = $this->mergeConfig($page);
-        if (!($config->get('enabled') && $config->get('active'))) {
-            return;
-        }
-		$markdown = $event['markdown'];
-		$this->staticmath->setupMarkdown($markdown);
-	}
-
-	/**
-     */
     public function onTwigSiteVariables()
     {
         /** @var Page $page */
@@ -111,10 +93,20 @@ class StaticmathPlugin extends Plugin
             return;
         }
 
-        $this->staticmath->enabled(true);
-
         if ($this->config->get('plugins.staticmath.built_in_css')) {
             $this->grav['assets']->add('plugins://staticmath/assets/css/katex.min.css');
         }
+    }
+
+    public function onPageContentRaw()
+    {
+        $page = $this->grav['page'];
+
+        // Skip if active is set to false
+        $config = $this->mergeConfig($page);
+        if (!($config->get('enabled') && $config->get('active'))) {
+            return;
+        }
+		$page->setRawContent($this->staticmath->parsePage($page->getRawContent()));
     }
 }

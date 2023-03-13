@@ -2,27 +2,9 @@
 
 namespace Grav\Plugin;
 use Grav\Common\Grav;
-use RocketTheme\Toolbox\Event\Event;
 
 class Staticmath
 {
-	protected $markdown;
-	protected $enabled = true;
-
-	public function enabled($enable = null)
-    {
-        if (is_bool($enable)) {
-            $this->enabled = (bool) $enable;
-        }
-
-        return $this->enabled;
-	}
-
-	public function render($content, $options = [], $page = null)
-    {
-        return $this->markdown->text($content);
-	}
-
 	public function parseLatex(string $tex) {
 		$staticmath_server = Grav::instance()['config']->get('plugins.staticmath.server');
 		$postfield = "data=" . $tex;
@@ -40,104 +22,36 @@ class Staticmath
 		return $result;
 	}
 
-	public function setupMarkdown($markdown)
+	public function parsePage($content)
     {
-        /**
-         * Markdown blocks
-         */
+		$delimiters = Grav::instance()['config']->get('plugins.staticmath.delimiters', []);
+		// First, do the blocks
+		foreach ($delimiters['block'] as $begin => $end) {
+			$regex = '/' . preg_quote($begin) . '(.*?)' . preg_quote($end) . '/sm';
+			// As long as we can still match a block, keep on going
+			while (preg_match($regex, $content, $matches)) {
+				// $matches is an array of matches, but the second element contains the "inner" portion
+				// Parse that "inner" portion
+				$parsed = $this->parseLatex($matches[1]);
+				// Now replace that extracted bit with the parsed data
+				$content = preg_replace($regex, $parsed, $content, 1);
+			}
+		}
 
-        $delimiters = Grav::instance()['config']->get('plugins.staticmath.delimiters', []);
+		foreach ($delimiters['inline'] as $begin => $end) {
+			$regex = '/' . preg_quote($begin) . '(.*?)' . preg_quote($end) . '/';
+			// As long as we can still match an inline section, keep on going
+			while(preg_match($regex, $content, $matches)) {
+				// $matches is an array of matches, but the second element contains the "inner" portion
+				// Parse that "inner" portion
+				$parsed = $this->parseLatex($matches[1]);
+				// Now replace that extracted bit with the parsed data
+				$content = preg_replace($regex, $parsed, $content, 1);
+			}
+		}
 
-        // Add Latex block environment to Markdown parser
-        $this->markdown = $markdown;
-        foreach ($delimiters['block'] as $begin => $end) {
-            $markdown->addBlockType($begin[0], 'Latex', true, true, 0);
-        }
+		return $content;
 
-        $markdown->blockLatex = function($line, $block = null) use ($delimiters)
-        {
-            if (!$this->enabled()) {
-                return;
-            }
-
-            foreach ($delimiters['block'] as $begin => $end) {
-                if (preg_match('/^(' . preg_quote($begin) . ')[ ]*$/', $line['text'], $matches)) {
-                    $block = [
-                        'begin' => $begin,
-                        'end' => $end,
-                        'element' => [
-                            'name' => 'p',
-                            'text' => [],
-                        ]
-                    ];
-
-                    return $block;
-                }
-            }
-        };
-
-        $markdown->blockLatexContinue = function($line, $block)
-        {
-            if (isset($block['complete'])) {
-                return;
-            }
-
-            if (preg_match('/^'. preg_quote($block['end']) . '[ ]*$/', $line['text'])) {
-                $block['complete'] = true;
-                return $block;
-            }
-
-            $block['element']['text'][] = $line['body'];
-            return $block;
-        };
-
-        $markdown->blockLatexComplete = function($block)
-        {
-            $text = $this->parseLatex(implode("\n", $block['element']['text']));
-
-            $block['element']['text'] = $text;
-			$block['markup'] = $block['element']['text'];
-            return $block;
-        };
-
-        /**
-         * Markdown inline
-         */
-
-        // Add Latex inline environment to Markdown parser
-        foreach ($delimiters['inline'] as $begin => $end) {
-            $markdown->addInlineType($begin[0], 'Latex', 0);
-        }
-
-        $markdown->inlineLatex = function($excerpt) use ($delimiters)
-        {
-            if (!$this->enabled()) {
-                return;
-            }
-
-            foreach ($delimiters['inline'] as $begin => $end) {
-                $begin = preg_quote($begin);
-                $end = preg_quote($end);
-
-                if (preg_match('/^(' . $begin . ')[ ]*(.+?)[ ]*(' . $end . ')/s', $excerpt['text'], $matches))
-                {
-                    $text = $this->parseLatex(preg_replace("/[\pZ\pC]+/u", ' ', $matches[2]));
-                    $block = [
-                        'extent' => strlen($matches[0]),
-                        'begin' => $matches[1],
-                        'end' => $matches[3],
-                        'element' => [
-                            'name' => 'span',
-                            'text' => $text
-                        ]
-                    ];
-
-                    $block['element']['text'] = $text;
-					$block['markup'] = $block['element']['text'];
-                    return $block;
-                }
-            }
-        };
     }
 }
 
