@@ -70,6 +70,12 @@ class StaticmathPlugin extends Plugin
         ]);
 	}
 
+    /**
+     * Extend page blueprints with StaticMath configuration options.
+     *
+     * @param Event $event
+     */
+
     public function onBlueprintCreated(Event $event)
     {
         /** @var Blueprints $blueprint */
@@ -82,6 +88,9 @@ class StaticmathPlugin extends Plugin
         }
     }
 
+	/**
+     * Initialize Twig configuration and filters.
+     */
     public function onTwigSiteVariables()
     {
         /** @var Page $page */
@@ -98,6 +107,9 @@ class StaticmathPlugin extends Plugin
         }
     }
 
+	/**
+	 * Render page with LaTeX replaced with HTML
+	 */
     public function onPageContentRaw()
     {
         $page = $this->grav['page'];

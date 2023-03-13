@@ -5,9 +5,16 @@ use Grav\Common\Grav;
 
 class Staticmath
 {
+	/**
+	 * Parse LaTeX code and convert it into KaTeX-rendered HTML
+	 *
+	 * @param string $tex The LaTeX code to be parsed
+	 * @param string $mode The mode the server should respond in (inline or block)
+	 * @return string The formatted HTML
+	 */
 	public function parseLatex(string $tex, string $mode) {
-		$staticmath_server = Grav::instance()['config']->get('plugins.staticmath.server') . '/' . $mode;
-		$postfield = "data=" . $tex;
+		$staticmath_server = Grav::instance()['config']->get('plugins.staticmath.server');
+		$postfield = "mode=" . $mode . "&" . "data=" . urlencode($tex);
 		$ch = curl_init($staticmath_server);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfield);
@@ -22,6 +29,12 @@ class Staticmath
 		return $result;
 	}
 
+	/**
+	 * Parse a raw page using Regex and black magic
+	 * 
+	 * @param string $content Page content
+	 * @return string Page content with rendered math
+	 */
 	public function parsePage($content)
     {
 		$delimiters = Grav::instance()['config']->get('plugins.staticmath.delimiters', []);
