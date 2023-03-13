@@ -5,8 +5,8 @@ use Grav\Common\Grav;
 
 class Staticmath
 {
-	public function parseLatex(string $tex) {
-		$staticmath_server = Grav::instance()['config']->get('plugins.staticmath.server');
+	public function parseLatex(string $tex, string $mode) {
+		$staticmath_server = Grav::instance()['config']->get('plugins.staticmath.server') . '/' . $mode;
 		$postfield = "data=" . $tex;
 		$ch = curl_init($staticmath_server);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
@@ -32,7 +32,7 @@ class Staticmath
 			while (preg_match($regex, $content, $matches)) {
 				// $matches is an array of matches, but the second element contains the "inner" portion
 				// Parse that "inner" portion
-				$parsed = $this->parseLatex($matches[1]);
+				$parsed = $this->parseLatex($matches[1], "block");
 				// Now replace that extracted bit with the parsed data
 				$content = preg_replace($regex, $parsed, $content, 1);
 			}
@@ -44,7 +44,7 @@ class Staticmath
 			while(preg_match($regex, $content, $matches)) {
 				// $matches is an array of matches, but the second element contains the "inner" portion
 				// Parse that "inner" portion
-				$parsed = $this->parseLatex($matches[1]);
+				$parsed = $this->parseLatex($matches[1], "inline");
 				// Now replace that extracted bit with the parsed data
 				$content = preg_replace($regex, $parsed, $content, 1);
 			}
