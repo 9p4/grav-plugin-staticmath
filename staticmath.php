@@ -66,6 +66,7 @@ class StaticmathPlugin extends Plugin
         $this->enable([
             // Put your main events here
 			'onPageContentRaw' => ['onPageContentRaw', 0],
+			'onPageContentProcessed' => ['onPageContentProcessed', $weight],
 			'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
         ]);
 	}
@@ -111,6 +112,21 @@ class StaticmathPlugin extends Plugin
 	 * Render page with LaTeX replaced with HTML
 	 */
     public function onPageContentRaw()
+    {
+        $page = $this->grav['page'];
+
+        // Skip if active is set to false
+        $config = $this->mergeConfig($page);
+        if (!($config->get('enabled') && $config->get('active'))) {
+            return;
+        }
+		$page->setRawContent($this->staticmath->parsePage($page->getRawContent()));
+    }
+
+	/**
+	 * Render page with LaTeX replaced with HTML
+	 */
+    public function onPageContentProcessed()
     {
         $page = $this->grav['page'];
 
