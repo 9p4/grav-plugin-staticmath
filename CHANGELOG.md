@@ -1,3 +1,8 @@
+# v0.1.2
+## 03/13/2023
+1. [](#bugfix)
+	* Only activate plugin on page when directed to do so with "active: true"
+
 # v0.1.1
 ## 03/13/2023
 
