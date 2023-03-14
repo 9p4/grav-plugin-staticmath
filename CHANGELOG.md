@@ -4,9 +4,7 @@
 1. [](#new)
 	* Added block and inline rendering methods (requires server upgrade)
 2. [](#bugfix)
-	* Fix compatibility issues with caching
-3. [](#improved)
-	* Easier, more maintainable code
+	* Fix LaTeX occasionally being not rendered after some time
 
 # v0.1.0
 ##  03/12/2023
