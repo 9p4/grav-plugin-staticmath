@@ -65,11 +65,21 @@ class StaticmathPlugin extends Plugin
         // Enable the main events we are interested in
         $this->enable([
             // Put your main events here
-			'onPageContentRaw' => ['onPageContentRaw', 0],
+			'onMarkdownInitialized' => ['onMarkdownInitialized', 0],
 			'onPageContentProcessed' => ['onPageContentProcessed', $weight],
 			'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
         ]);
 	}
+
+    /**
+     * Set up Markdown for staticmath
+     *
+     * @param  Event  $event the event containing the markdown parser
+     */
+    public function onMarkdownInitialized(Event $event)
+    {
+        $this->staticmath->setupMarkdown($event['markdown']);
+    }
 
     /**
      * Extend page blueprints with StaticMath configuration options.
@@ -126,15 +136,18 @@ class StaticmathPlugin extends Plugin
 	/**
 	 * Render page with LaTeX replaced with HTML
 	 */
-    public function onPageContentProcessed()
+    public function onPageContentProcessed(Event $event)
     {
-        $page = $this->grav['page'];
+		// Get the page header
+        $page = $event['page'];
 
-        // Skip if active is set to false
         $config = $this->mergeConfig($page);
-        if (!($config->get('enabled') && $config->get('active'))) {
-            return;
-        }
-		$page->setRawContent($this->staticmath->parsePage($page->getRawContent()));
+        $enabled = ($config->get('enabled') && $config->get('active')) ? true : false;
+
+        // Get modified content, replace all tokens with their
+        // respective formula and write content back to page
+        $type = $enabled ? 'html' : 'raw';
+        $content = $page->getRawContent();
+        $page->setRawContent($this->staticmath->normalize($content, $type));
     }
 }
