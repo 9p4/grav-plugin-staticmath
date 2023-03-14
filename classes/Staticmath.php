@@ -1,12 +1,40 @@
 <?php
+/**
+ * StaticMath Plugin
+ *
+ * Main functionality class
+ *
+ * See LICENSE
+ */
 
 namespace Grav\Plugin;
 use Grav\Common\Grav;
 
+/**
+ * Class StaticMath
+ * @packag Grav\Plugin\StaticMath
+ */
 class Staticmath
 {
+	/**
+     * A key-valued array used for hashing math formulas of a page
+     *
+     * @var array
+     */
 	protected $hashes = [];
+
+	/**
+     * A unique identifier
+     *
+     * @var string
+     */
 	protected $id;
+
+	/**
+     * Markdown instance.
+     *
+     * @var \Grav\Common\Parseown\Parsedown
+     */
 	protected $markdown;
 
 	/**

@@ -1,4 +1,19 @@
 <?php
+/**
+ * Grav StaticMath plugin v0.1.3
+ *
+ * This plugin renders math server-side and displays it to the client with
+ * Katex.
+ *
+ * Based on the code from the Grav MathJax plugin: https://github.com/sommerregen/grav-plugin-mathjax
+ *
+ * @package		StaticMath
+ * @version		0.1.3
+ * @link		<https://sr.ht/~fd/grav-plugin-staticmath>
+ * @author		Ersei Saggi <contact@ersei.net>
+ * @copyright	2023, Ersei Saggi
+ * @license 	<http://opensource.org/licenses/MIT>		MIT
+ */
 namespace Grav\Plugin;
 
 use Composer\Autoload\ClassLoader;
@@ -14,7 +29,13 @@ use Grav\Common\Data\Blueprints;
 class StaticmathPlugin extends Plugin
 {
 
+	/**
+	 * Instance of StaticMath class
+	 *
+	 * @var Grav\Plugin\StaticMath
+	 */
 	protected $staticmath;
+
 	/**
 	 * @return array
 	 *

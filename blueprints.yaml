@@ -1,14 +1,14 @@
 name: staticmath
 slug: staticmath
 type: plugin
-version: 0.1.1
+version: 0.1.3
 description: Converts LaTeX to static math
 icon: plug
 author:
   name: Ersei Saggi
   email: contact@ersei.net
-homepage: https://git.sr.ht/~fd/grav-plugin-staticmath
-demo: https://ersei.net
+homepage: https://sr.ht/~fd/grav-plugin-staticmath
+demo: https://ersei.net/en/blog/rsa-basics
 keywords: grav, plugin, etc
 bugs: https://todo.sr.ht/~fd/grav-plugin-staticmath
 docs: https://git.sr.ht/~fd/grav-plugin-staticmath/tree/main/item/README.md

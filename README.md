@@ -46,6 +46,7 @@ enabled: true
 built_in_css: true # Uses built-in KaTeX CSS
 active: false # Whether the plugin is active on a page
 server: "http://localhost:3000" # The location of the StaticMath server
+weight: -5 # Priority of this plugin
 delimiters:
   inline:                 # Inline delimiters
     '\(': '\)'            # - MathJax/KaTeX
