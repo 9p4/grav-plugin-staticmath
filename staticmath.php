@@ -88,7 +88,8 @@ class StaticmathPlugin extends Plugin
 			// Put your main events here
 			'onMarkdownInitialized' => ['onMarkdownInitialized', 0],
 			'onPageContentProcessed' => ['onPageContentProcessed', $weight],
-			'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
+			'onTwigSiteVariables' => ['onTwigSiteVariables', 0],
+			'onPageContentRaw' => ['onPageContentRaw', 0]
 		]);
 	}
 

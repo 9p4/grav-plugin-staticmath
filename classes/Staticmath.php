@@ -150,7 +150,7 @@ class Staticmath
 
 			$this->id(time() . md5($text));
 			$block['element']['text'] = $text;
-			$block['markup'] = $this->hash($block['element'], $text);
+			$block['markup'] = $this->hash($text);
 			return $block;
 		};
 
@@ -184,7 +184,7 @@ class Staticmath
 
 					$this->id(time() . md5($text));
 					$block['element']['text'] = $text;
-					$block['markup'] = $this->hash($block['element'], $text);
+					$block['markup'] = $this->hash($text);
 					return $block;
 				}
 			}
@@ -200,12 +200,11 @@ class Staticmath
 	 * calling normalize.
 	 *
 	 * @param  string $text The text to be hashed
-	 * @param  string $type The type (category) the text should be saved
 	 *
 	 * @return string	   Return a unique text-token which will be
 	 *					  reverted back when calling normalize.
 	 */
-	protected function hash($block, $text = '')
+	protected function hash($text = '')
 	{
 		static $counter = 0;
 
@@ -213,10 +212,9 @@ class Staticmath
 		$key = implode('::', array('staticmath', $this->id(), ++$counter, 'M'));
 
 		// Render markdown block
-		$html = $text;
 		$this->hashes[$key] = [
 			'raw' => $text,
-			'html' => $html,
+			'html' => $text,
 		];
 
 		return $key;
