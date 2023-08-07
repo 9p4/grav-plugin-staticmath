@@ -45,6 +45,7 @@ Here is the default configuration and an explanation of available options:
 enabled: true
 built_in_css: true # Uses built-in KaTeX CSS
 active: false # Whether the plugin is active on a page
+output: "htmlAndMathml" # Set output mode. Can be either "html", "htmlAndMathml", or "mathml"
 server: "http://localhost:3000" # The location of the StaticMath server
 ```
 

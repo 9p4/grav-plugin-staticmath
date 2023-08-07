@@ -1,3 +1,4 @@
 enabled: true
 built_in_css: true
+output: "htmlAndMathml"
 server: "http://localhost:3000"
