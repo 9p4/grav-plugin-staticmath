@@ -1,6 +1,6 @@
 <?php
 /**
- * Grav StaticMath plugin v0.1.3
+ * Grav StaticMath plugin v1.0.0
  *
  * This plugin renders math server-side and displays it to the client with
  * Katex.
@@ -8,11 +8,11 @@
  * Based on the code from the Grav MathJax plugin: https://github.com/sommerregen/grav-plugin-mathjax
  *
  * @package		StaticMath
- * @version		0.1.3
+ * @version		1.0.0
  * @link		<https://sr.ht/~fd/grav-plugin-staticmath>
  * @author		Ersei Saggi <contact@ersei.net>
  * @copyright	2023, Ersei Saggi
- * @license 	<http://opensource.org/licenses/MIT>		MIT
+ * @license		<http://opensource.org/licenses/MIT>		MIT
  */
 namespace Grav\Plugin;
 
@@ -49,9 +49,9 @@ class StaticmathPlugin extends Plugin
 	public static function getSubscribedEvents(): array
 	{
 		return [
-			'onPluginsInitialized' => ['onPluginsInitialized', 0]
-			
-		];
+            'onPluginsInitialized' => ['onPluginsInitialized', 0],
+            'onGetPageBlueprints' => ['onGetPageBlueprints', 0]
+        ];
 	}
 
 	/**
@@ -65,6 +65,14 @@ class StaticmathPlugin extends Plugin
 	}
 
 	/**
+     * Register shortcodes
+     */
+    public function onShortcodeHandlers()
+    {
+        $this->grav['shortcode']->registerAllShortcodes(__DIR__ . '/shortcodes');
+    }
+
+	/**
 	 * Initialize the plugin
 	 */
 	public function onPluginsInitialized(): void
@@ -72,66 +80,19 @@ class StaticmathPlugin extends Plugin
 		// Don't proceed if we are in the admin plugin
 		if ($this->isAdmin()) {
 			$this->active = false;
-			$this->enable([
-				'onBlueprintCreated' => ['onBlueprintCreated', 0]
-			]);
 			return;
 		}
 
-		require_once(__DIR__ . '/classes/Staticmath.php');
-		$this->staticmath = new Staticmath();
-
-		$weight = $this->config->get('plugins.staticmath.weight', -5);
-
-		// Enable the main events we are interested in
-		$this->enable([
-			// Put your main events here
-			'onMarkdownInitialized' => ['onMarkdownInitialized', 0],
-			'onPageContentProcessed' => ['onPageContentProcessed', $weight],
-			'onTwigSiteVariables' => ['onTwigSiteVariables', 0],
-			'onPageContentRaw' => ['onPageContentRaw', 0]
-		]);
-	}
-
-	/**
-	 * Set up Markdown for staticmath
-	 *
-	 * @param  Event  $event the event containing the markdown parser
-	 */
-	public function onMarkdownInitialized(Event $event)
-	{
-		/** @var Page $page */
-		$page = $this->grav['page'];
-		// Skip if active is set to false
-		$config = $this->mergeConfig($page);
-		if (!($config->get('enabled') && $config->get('active'))) {
-			return;
-		}
-		$this->staticmath->setupMarkdown($event['markdown']);
-	}
-
-	/**
-	 * Extend page blueprints with StaticMath configuration options.
-	 *
-	 * @param Event $event
-	 */
-
-	public function onBlueprintCreated(Event $event)
-	{
-		/** @var Blueprints $blueprint */
-		$blueprint = $event['blueprint'];
-
-		if ($blueprint->get('form/fields/tabs')) {
-			$blueprints = new Blueprints(__DIR__ . '/blueprints');
-			$extends = $blueprints->get($this->name);
-			$blueprint->extend($extends, true);
-		}
+        $this->enable([
+            'onShortcodeHandlers' => ['onShortcodeHandlers', 0],
+            'onPageInitialized' => ['onPageInitialized', 0]
+        ]);
 	}
 
 	/**
 	 * Initialize Twig configuration and filters.
 	 */
-	public function onTwigSiteVariables()
+	public function onPageInitialized()
 	{
 		/** @var Page $page */
 		$page = $this->grav['page'];
@@ -145,50 +106,5 @@ class StaticmathPlugin extends Plugin
 		if ($this->config->get('plugins.staticmath.built_in_css')) {
 			$this->grav['assets']->add('plugins://staticmath/assets/css/katex.min.css');
 		}
-	}
-
-	/**
-	 * Render page with LaTeX replaced with HTML
-	 */
-	public function onPageContentRaw()
-	{
-		$page = $this->grav['page'];
-
-		// Skip if active is set to false
-		$config = $this->mergeConfig($page);
-		if (!($config->get('enabled') && $config->get('active'))) {
-			return;
-		}
-
-		// Skip if active is set to false
-		$config = $this->mergeConfig($page);
-		if (!($config->get('enabled') && $config->get('active'))) {
-			return;
-		}
-		$page->setRawContent($this->staticmath->parsePage($page->getRawContent()));
-	}
-
-	/**
-	 * Render page with LaTeX replaced with HTML
-	 */
-	public function onPageContentProcessed(Event $event)
-	{
-		// Get the page header
-		$page = $event['page'];
-
-		// Skip if active is set to false
-		$config = $this->mergeConfig($page);
-		if (!($config->get('enabled') && $config->get('active'))) {
-			return;
-		}
-
-		$config = $this->mergeConfig($page);
-		$enabled = ($config->get('enabled') && $config->get('active')) ? true : false;
-
-		// Get modified content, replace all tokens with their
-		// respective formula and write content back to page
-		$type = $enabled ? 'html' : 'raw';
-		$content = $page->getRawContent();
-		$page->setRawContent($this->staticmath->normalize($content, $type));
 	}
 }

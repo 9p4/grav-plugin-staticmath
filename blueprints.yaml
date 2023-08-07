@@ -1,7 +1,7 @@
 name: staticmath
 slug: staticmath
 type: plugin
-version: 0.1.3
+version: 1.0.0
 description: Converts LaTeX to static math
 icon: plug
 author:
@@ -16,6 +16,7 @@ license: MIT
 
 dependencies:
   - { name: grav, version: '>=1.6.0' }
+  - { name: shortcode-core, version: '>=4.2.2' }
 
 form:
   validation: strict
@@ -53,18 +54,6 @@ form:
                 0: PLUGIN_ADMIN.NO
               validate:
                 type: bool
-
-            delimiters.block:
-              type: array
-              label: PLUGINS.STATICMATH.DELIMITERS.BLOCK
-              placeholder_key: '\['
-              placeholder_value: '\]'
-
-            delimiters.inline:
-              type: array
-              label: PLUGINS.STATICMATH.DELIMITERS.INLINE
-              placeholder_key: '\('
-              placeholder_value: '\)'
 
         basic:
           type: tab

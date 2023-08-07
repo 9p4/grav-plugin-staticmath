@@ -46,15 +46,6 @@ enabled: true
 built_in_css: true # Uses built-in KaTeX CSS
 active: false # Whether the plugin is active on a page
 server: "http://localhost:3000" # The location of the StaticMath server
-weight: -5 # Priority of this plugin
-delimiters:
-  inline:                 # Inline delimiters
-    '\(': '\)'            # - MathJax/KaTeX
-    '$': '$'              # - LaTeX
-
-  block:                  # Block delimiters
-    '\[': '\]'            # - MathJax/KaTeX
-    '$$': '$$'            # - LaTeX
 ```
 
 Note that if you use the Admin Plugin, a file with your configuration named staticmath.yaml will be saved in the `user/config/plugins/`-folder once the configuration is saved in the Admin.
@@ -64,11 +55,11 @@ Note that if you use the Admin Plugin, a file with your configuration named stat
 Wherever you want LaTeX code in your server, use the delimiters set in the configuration, like so:
 
 ```markdown
-$$
+[tex]
 \text{This is a block of LaTeX code}
-$$
+[/tex]
 
-And $\text{this}$ is inline LaTeX code.
+And [texi]\text{this}[/texi] is inline LaTeX code.
 ```
 
 ## Credits

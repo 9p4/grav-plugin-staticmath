@@ -1,11 +1,3 @@
 enabled: true
 built_in_css: true
 server: "http://localhost:3000"
-delimiters:
-  inline:                 # Inline delimiters
-    '\(': '\)'            # - MathJax/KaTeX
-    '$': '$'              # - LaTeX
-
-  block:                  # Block delimiters
-    '\[': '\]'            # - MathJax/KaTeX
-    '$$': '$$'            # - LaTeX
