@@ -18,7 +18,4 @@ tasks:
       _FILE_
   - push-to-github: |
       cd ~/"${REPO}"
-      # remove remotes/origin/HEAD so we don't push it
-      git remote set-head origin -d
-      git remote add github "git@github.com:${GH_USER}/${REPO}.git"
-      git push --prune github '+refs/remotes/origin/*:refs/heads/*' '+refs/tags/*:refs/tags/*'
+      git push --mirror "git@github.com:${GH_USER}/${REPO}.git"
