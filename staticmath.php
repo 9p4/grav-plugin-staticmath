@@ -1,6 +1,6 @@
 <?php
 /**
- * Grav StaticMath plugin v1.0.0
+ * Grav StaticMath plugin v1.0.1
  *
  * This plugin renders math server-side and displays it to the client with
  * Katex.
@@ -8,7 +8,7 @@
  * Based on the code from the Grav MathJax plugin: https://github.com/sommerregen/grav-plugin-mathjax
  *
  * @package		StaticMath
- * @version		1.0.0
+ * @version		1.0.1
  * @link		<https://sr.ht/~fd/grav-plugin-staticmath>
  * @author		Ersei Saggi <contact@ersei.net>
  * @copyright	2023, Ersei Saggi

@@ -1,7 +1,7 @@
 name: staticmath
 slug: staticmath
 type: plugin
-version: 1.0.0
+version: 1.0.1
 description: Converts LaTeX to static math
 icon: plug
 author:
