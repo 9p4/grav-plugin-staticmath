@@ -1,3 +1,8 @@
+# v1.0.2
+## 07-10-2023
+1. [](#bugfix)
+    * Fix admin page crashing, wrong langauge, and configuration UI
+
 # v1.0.1
 ## 02-10-2023
 

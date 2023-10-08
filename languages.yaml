@@ -5,6 +5,13 @@ en:
       BUILTIN_CSS: "Use built in CSS"
       BASIC_CONFIGURATION: "Basic configuration"
       ACTIVE: "Activate StaticMath on page"
-      DELIMITERS:
-        BLOCK: 'LaTeX block delimiters'
-        INLINE: 'LaTeX inline delimiters'
+      PLUGIN_STATUS: "Enabled"
+      SERVER_ADDRESS: "Backend Address"
+      YES: "Yes"
+      NO: "No"
+      ENABLED: "Enabled"
+      DISABLED: "Disabled"
+      OUTPUT_MODE: "Output Mode"
+      HTML: "HTML Only"
+      MATHML: "MathML Only"
+      HTML_AND_MATHML: "HTML and MathML"

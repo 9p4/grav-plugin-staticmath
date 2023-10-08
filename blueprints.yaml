@@ -1,7 +1,7 @@
 name: staticmath
-slug: staticmath
+slug: StaticMath
 type: plugin
-version: 1.0.1
+version: 1.0.2
 description: Converts LaTeX to static math
 icon: plug
 author:
@@ -39,8 +39,8 @@ form:
               highlight: 1
               default: 0
               options:
-                1: PLUGIN_ADMIN.ENABLED
-                0: PLUGIN_ADMIN.DISABLED
+                1: PLUGINS.STATICMATH.ENABLED
+                0: PLUGINS.STATICMATH.DISABLED
               validate:
                 type: bool
 
@@ -48,24 +48,35 @@ form:
               type: toggle
               label: PLUGINS.STATICMATH.ACTIVE
               highlight: 1
-              default: 1
+              default: 0
               options:
-                1: PLUGIN_ADMIN.YES
-                0: PLUGIN_ADMIN.NO
+                1: PLUGINS.STATICMATH.YES
+                0: PLUGINS.STATICMATH.NO
               validate:
                 type: bool
 
-        basic:
-          type: tab
-          title: PLUGINS.STATICMATH.BASIC_CONFIGURATION
-
-          fields:
             built_in_css:
               type: toggle
               label: PLUGINS.STATICMATH.BUILTIN_CSS
               default: 1
               options:
-                1: PLUGIN_ADMIN.YES
-                0: PLUGIN_ADMIN.NO
+                1: PLUGINS.STATICMATH.YES
+                0: PLUGINS.STATICMATH.NO
               validate:
                 type: bool
+
+            server:
+              type: text
+              label: PLUGINS.STATICMATH.SERVER_ADDRESS
+              placeholder: http://localhost:3000
+              validate:
+                pattern: 'https?:\/\/.*'
+
+            output:
+              type: select
+              label: PLUGINS.STATICMATH.OUTPUT_MODE
+              default: "htmlAndMathml"
+              options:
+                'htmlAndMathml': PLUGINS.STATICMATH.HTML_AND_MATHML
+                'html': PLUGINS.STATICMATH.HTML
+                'mathml': PLUGINS.STATICMATH.MATHML
