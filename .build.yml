@@ -1,21 +1,11 @@
-# https://blog.michaelkelly.org/2023/05/mirroring-sourcehut-repositories-to-github/
-# As much as I like sourcehut, Grav requires the plugin to be published to Github
-
 image: alpine/edge
 secrets:
-  - 0c90394b-1e27-4465-82af-a07568b4c67f
+  - 4df836f8-5313-40b1-bc4e-b7b20cfd147e
 environment:
   REPO: grav-plugin-staticmath
   GH_USER: 9p4
 tasks:
-  - write-ssh-config: |
-      cat <<_FILE_ >> ~/.ssh/config
-      Host github.com
-        IdentityFile ~/.ssh/id_rsa
-        IdentitiesOnly yes
-        BatchMode yes
-        StrictHostKeyChecking no
-      _FILE_
   - push-to-github: |
       cd ~/"${REPO}"
-      git push --mirror "git@github.com:${GH_USER}/${REPO}.git"
+      git config --global credential.helper store
+      git push --mirror "https://github.com/${GH_USER}/${REPO}"
