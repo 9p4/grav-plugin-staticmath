@@ -1,7 +1,7 @@
 name: staticmath
 slug: StaticMath
 type: plugin
-version: 1.0.3
+version: 2.0.0
 description: Converts LaTeX to static math
 icon: plug
 author:
@@ -71,12 +71,3 @@ form:
               placeholder: http://localhost:3000
               validate:
                 pattern: 'https?:\/\/.*'
-
-            output:
-              type: select
-              label: PLUGINS.STATICMATH.OUTPUT_MODE
-              default: "htmlAndMathml"
-              options:
-                'htmlAndMathml': PLUGINS.STATICMATH.HTML_AND_MATHML
-                'html': PLUGINS.STATICMATH.HTML
-                'mathml': PLUGINS.STATICMATH.MATHML

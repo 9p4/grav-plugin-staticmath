@@ -1,3 +1,8 @@
+# v2.0.0
+## 27-10-2024
+1. [](#improved)
+    * Switch from KaTeX to Temml. MathML is the only valid output mode. This may break math rendering in ancient browsers. This fixes math rendering in RSS feeds, however.
+
 # v1.0.3
 ## 10-02-2024
 1. [](#improved)

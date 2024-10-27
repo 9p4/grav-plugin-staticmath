@@ -5,7 +5,7 @@
 
 # Grav StaticMath Plugin
 
-The **StaticMath** Plugin is an extension for [Grav CMS](https://github.com/getgrav/grav). This plugin converts LaTeX to static math (with some CSS) using server-side [KaTeX](https://katex.org).
+The **StaticMath** Plugin is an extension for [Grav CMS](https://github.com/getgrav/grav). This plugin converts LaTeX to static math (with some CSS) using server-side [Temml](https://temml.org).
 
 ## Installation
 
@@ -43,9 +43,8 @@ Here is the default configuration and an explanation of available options:
 
 ```yaml
 enabled: true
-built_in_css: true # Uses built-in KaTeX CSS
+built_in_css: true # Uses built-in Temml CSS
 active: false # Whether the plugin is active on a page
-output: "htmlAndMathml" # Set output mode. Can be either "html", "htmlAndMathml", or "mathml"
 server: "http://localhost:3000" # The location of the StaticMath server
 ```
 
@@ -65,4 +64,6 @@ And [texi]\text{this}[/texi] is inline LaTeX code.
 
 ## Credits
 
-Much thanks to [KaTeX](https://katex.org) for rendering the math, the [Grav MathJax Plugin](https://github.com/Sommerregen/grav-plugin-mathjax) for giving me a base to build off of, and the [Grav ZMarkdown Plugin](https://github.com/AmauryCarrade/grav-plugin-zmarkdown-engine) to give me pointers for how to do networking in PHP.
+Much thanks to [Temml](https://temml.org) for rendering the math, the [Grav MathJax Plugin](https://github.com/Sommerregen/grav-plugin-mathjax) for giving me a base to build off of, and the [Grav ZMarkdown Plugin](https://github.com/AmauryCarrade/grav-plugin-zmarkdown-engine) to give me pointers for how to do networking in PHP.
+
+The Latin Modern Math WOFF2 file is from [the MathFonts](https://github.com/fred-wang/MathFonts) repository, under the [MPL2.0 license](https://mozilla.org/MPL/2.0) license.

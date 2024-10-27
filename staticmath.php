@@ -1,17 +1,17 @@
 <?php
 /**
- * Grav StaticMath plugin v1.0.3
+ * Grav StaticMath plugin v2.0.0
  *
  * This plugin renders math server-side and displays it to the client with
- * Katex.
+ * Temml.
  *
  * Based on the code from the Grav MathJax plugin: https://github.com/sommerregen/grav-plugin-mathjax
  *
  * @package		StaticMath
- * @version		1.0.3
+ * @version		2.0.0
  * @link		<https://sr.ht/~fd/grav-plugin-staticmath>
  * @author		Ersei Saggi <contact@ersei.net>
- * @copyright	2023, Ersei Saggi
+ * @copyright	2024, Ersei Saggi
  * @license		<http://opensource.org/licenses/MIT>		MIT
  */
 namespace Grav\Plugin;
@@ -104,7 +104,7 @@ class StaticmathPlugin extends Plugin
 		}
 
 		if ($this->config->get('plugins.staticmath.built_in_css')) {
-			$this->grav['assets']->add('plugins://staticmath/assets/css/katex.min.css');
+			$this->grav['assets']->add('plugins://staticmath/assets/css/Temml-Latin-Modern.css');
 		}
 	}
 

@@ -26,8 +26,7 @@ class StaticMathShortcode extends Shortcode
 	private function render($content, $inline = false) {
 		$mode = $inline ? "inline" : "block";
 		$staticmath_server = Grav::instance()['config']->get('plugins.staticmath.server');
-		$output = Grav::instance()['config']->get('plugins.staticmath.output');
-		$postfield = "mode=" . urlencode($mode) . "&output=" . urlencode($output) . "&data=" . urlencode($content);
+		$postfield = "mode=" . urlencode($mode) . "&data=" . urlencode($content);
 		$ch = curl_init($staticmath_server);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfield);
