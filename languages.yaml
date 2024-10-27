@@ -11,7 +11,3 @@ en:
       NO: "No"
       ENABLED: "Enabled"
       DISABLED: "Disabled"
-      OUTPUT_MODE: "Output Mode"
-      HTML: "HTML Only"
-      MATHML: "MathML Only"
-      HTML_AND_MATHML: "HTML and MathML"

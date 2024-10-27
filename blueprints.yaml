@@ -1,5 +1,5 @@
-name: staticmath
-slug: StaticMath
+name: StaticMath
+slug: staticmath
 type: plugin
 version: 2.0.0
 description: Converts LaTeX to static math

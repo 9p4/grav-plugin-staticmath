@@ -1,3 +1,8 @@
+# v2.0.1
+## 27-10-2024
+1. [](#improved)
+    * Clean up documentation, blueprints, and language strings.
+
 # v2.0.0
 ## 27-10-2024
 1. [](#improved)
