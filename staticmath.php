@@ -1,6 +1,6 @@
 <?php
 /**
- * Grav StaticMath plugin v2.0.0
+ * Grav StaticMath plugin v2.0.1
  *
  * This plugin renders math server-side and displays it to the client with
  * Temml.
@@ -8,7 +8,7 @@
  * Based on the code from the Grav MathJax plugin: https://github.com/sommerregen/grav-plugin-mathjax
  *
  * @package		StaticMath
- * @version		2.0.0
+ * @version		2.0.1
  * @link		<https://sr.ht/~fd/grav-plugin-staticmath>
  * @author		Ersei Saggi <contact@ersei.net>
  * @copyright	2024, Ersei Saggi
@@ -20,7 +20,7 @@ use Composer\Autoload\ClassLoader;
 use Grav\Common\Plugin;
 use RocketTheme\Toolbox\Event\Event;
 use Grav\Common\Page\Page;
-use Grav\Common\Data\Blueprints;
+use Grav\Common\Grav;
 
 /**
  * Class StaticmathPlugin
@@ -49,9 +49,10 @@ class StaticmathPlugin extends Plugin
 	public static function getSubscribedEvents(): array
 	{
 		return [
-            'onPluginsInitialized' => ['onPluginsInitialized', 0],
-            'onGetPageBlueprints' => ['onGetPageBlueprints', 0]
-        ];
+			'onPluginsInitialized' => ['onPluginsInitialized', 0],
+			'onGetPageBlueprints' => ['onGetPageBlueprints', 0],
+			'onMarkdownInitialized' => ['onMarkdownInitialized', 0],
+		];
 	}
 
 	/**
@@ -65,12 +66,12 @@ class StaticmathPlugin extends Plugin
 	}
 
 	/**
-     * Register shortcodes
-     */
-    public function onShortcodeHandlers()
-    {
-        $this->grav['shortcode']->registerAllShortcodes(__DIR__ . '/shortcodes');
-    }
+	 * Register shortcodes
+	 */
+	public function onShortcodeHandlers()
+	{
+		$this->grav['shortcode']->registerAllShortcodes(__DIR__ . '/shortcodes');
+	}
 
 	/**
 	 * Initialize the plugin
@@ -83,10 +84,68 @@ class StaticmathPlugin extends Plugin
 			return;
 		}
 
-        $this->enable([
-            'onShortcodeHandlers' => ['onShortcodeHandlers', 0],
-            'onPageInitialized' => ['onPageInitialized', 0]
-        ]);
+		$this->enable([
+			'onShortcodeHandlers' => ['onShortcodeHandlers', 0],
+			'onPageInitialized' => ['onPageInitialized', 0]
+		]);
+	}
+
+	public function onMarkdownInitialized(Event $event)
+	{
+		$markdown = $event['markdown'];
+
+		$page = $this->grav['page'];
+		$config = $this->mergeConfig($page);
+		if (!($config->get('enabled') && $config->get('active'))) {
+			return;
+		}
+		$markdown->addBlockType('$', 'Staticmath', true, false);
+		$markdown->addInlineType('$', 'Staticmath');
+
+		$markdown->blockStaticmath = function($Line) {
+			if (preg_match('/^\$\$$/', $Line['text'], $matches)) {
+				$Block = [
+					'element' => [
+						'name' => 'div',
+						'handler' => 'lines',
+						'text' => [],
+					],
+				];
+
+				return $Block;
+			}
+		};
+
+		$markdown->blockStaticmathContinue = function($Line, array $Block) {
+			if (isset($Block['interrupted'])) {
+				return;
+			}
+			if (!preg_match('/^\$\$$/', $Line['text'])) {
+				$Block['element']['text'][] = $Line['text'];
+			} else {
+				$text = implode(
+					"\n",
+					$Block['element']['text']
+				);
+
+				$Block['element']['text'] = (array) $this->render($text);
+			}
+			return $Block;
+		};
+
+		$markdown->inlineStaticmath = function($Line) {
+			if (preg_match('/\$(.+?)\$/', $Line['text'], $matches)) {
+				$Block = [
+					'extent' => strlen($matches[0]),
+					'element' => [
+						'name' => 'span',
+						'handler' => 'lines',
+						'text' => (array) $this->render($matches[1], true),
+					],
+				];
+				return $Block;
+			}
+		};
 	}
 
 	/**
@@ -108,10 +167,28 @@ class StaticmathPlugin extends Plugin
 		}
 	}
 
-    public function onGetPageBlueprints($event)
-    {
-        $types = $event->types;
-        $types->scanBlueprints('plugin://staticmath/blueprints');
-    }
+	public function onGetPageBlueprints($event)
+	{
+		$types = $event->types;
+		$types->scanBlueprints('plugin://staticmath/blueprints');
+	}
+
+	private function render($content, $inline = false) {
+		$mode = $inline ? "inline" : "block";
+		$staticmath_server = Grav::instance()['config']->get('plugins.staticmath.server');
+		$postfield = "mode=" . urlencode($mode) . "&data=" . urlencode($content);
+		$ch = curl_init($staticmath_server);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfield);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, [
+			'Content-Length: ' . strlen($postfield)
+		]);
+		$result = curl_exec($ch);
+		if (!$result) {
+			return "<pre>" . $content . "</pre>";
+		}
+		return $result;
+	}
 
 }
