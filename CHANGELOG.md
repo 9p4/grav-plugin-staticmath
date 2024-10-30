@@ -1,7 +1,9 @@
 # v2.0.1
-## 27-10-2024
+## 30-10-2024
 1. [](#improved)
     * Clean up documentation, blueprints, and language strings.
+    * Clarify license with bundled font files
+    * Improve plugin metadata (icon, tags)
 
 # v2.0.0
 ## 27-10-2024

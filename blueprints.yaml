@@ -1,18 +1,18 @@
 name: StaticMath
 slug: staticmath
 type: plugin
-version: 2.0.0
-description: Converts LaTeX to static math
-icon: plug
+version: 2.0.1
+description: "Compiles LaTeX to static and accessible MathML using an [external rendering server](http://git.sr.ht/~fd/staticmath-server)."
+icon: square-root-alt
 author:
   name: Ersei Saggi
   email: contact@ersei.net
 homepage: https://sr.ht/~fd/grav-plugin-staticmath
 demo: https://ersei.net/en/blog/rsa-basics
-keywords: grav, plugin, etc
+keywords: math, latex
 bugs: https://todo.sr.ht/~fd/grav-plugin-staticmath
 docs: https://git.sr.ht/~fd/grav-plugin-staticmath/tree/main/item/README.md
-license: MIT
+license: MIT, LPPL-1.3c
 
 dependencies:
   - { name: grav, version: '>=1.6.0' }
