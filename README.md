@@ -42,9 +42,7 @@ Before configuring this plugin, you should copy the `user/plugins/staticmath/sta
 Here is the default configuration and an explanation of available options:
 
 ```yaml
-enabled: true
 built_in_css: true # Uses built-in Temml CSS
-active: false # Whether the plugin is active on a page
 server: "http://localhost:3000" # The location of the StaticMath server
 ```
 
@@ -55,11 +53,11 @@ Note that if you use the Admin Plugin, a file with your configuration named stat
 Wherever you want LaTeX code in your server, use the delimiters set in the configuration, like so:
 
 ```markdown
-[tex]
+$$
 \text{This is a block of LaTeX code}
-[/tex]
+$$
 
-And [texi]\text{this}[/texi] is inline LaTeX code.
+And $\text{this}$ is inline LaTeX code.
 ```
 
 ## Credits
