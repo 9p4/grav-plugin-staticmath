@@ -93,11 +93,6 @@ class StaticmathPlugin extends Plugin
     {
         $markdown = $event['markdown'];
 
-        $page = $this->grav['page'];
-        $config = $this->mergeConfig($page);
-        if (! ($config->get('enabled') && $config->get('active'))) {
-            return;
-        }
         $markdown->addBlockType('$', 'Staticmath', true, false);
         $markdown->addInlineType('$', 'Staticmath');
 
@@ -134,7 +129,11 @@ class StaticmathPlugin extends Plugin
         };
 
         $markdown->inlineStaticmath = function ($Line) {
-            if (preg_match('/\$(.+?)\$/', $Line['text'], $matches)) {
+            // Regex matches non-greedy anything between $..$, but ensures that there's no whitespace
+            // right after the first $ or before the last $:
+            // $ a$ will not match, but $a$ will.
+            // Also ensures that the dollar signs are not preceded by backslashes
+            if (preg_match('/(?<!\\)\$(?!\s)(.+?)(?<!\s)(?<!\\)\$/', $Line['text'], $matches)) {
                 $Block = [
                     'extent' => strlen($matches[0]),
                     'element' => [
@@ -156,12 +155,6 @@ class StaticmathPlugin extends Plugin
     {
         /** @var Page $page */
         $page = $this->grav['page'];
-
-        // Skip if active is set to false
-        $config = $this->mergeConfig($page);
-        if (! ($config->get('enabled') && $config->get('active'))) {
-            return;
-        }
 
         if ($this->config->get('plugins.staticmath.built_in_css')) {
             $this->grav['assets']->add('plugins://staticmath/assets/css/Temml-Latin-Modern.css');
