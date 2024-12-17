@@ -133,7 +133,7 @@ class StaticmathPlugin extends Plugin
             // right after the first $ or before the last $:
             // $ a$ will not match, but $a$ will.
             // Also ensures that the dollar signs are not preceded by backslashes
-            if (preg_match('/(?<!\\)\$(?!\s)(.+?)(?<!\s)(?<!\\)\$/', $Line['text'], $matches)) {
+            if (preg_match('/(?<!\\\\)\$(?!\s)(.+?)(?<!\s)(?<!\\\\)\$/', $Line['text'], $matches)) {
                 $Block = [
                     'extent' => strlen($matches[0]),
                     'element' => [
