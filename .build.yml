@@ -1,6 +1,6 @@
 image: alpine/edge
 secrets:
-  - fb389746-a44b-4ecc-9702-745977561e14
+  - 5179ef46-70c0-4ece-9b67-dbf8dca2c37e
 environment:
   REPO: grav-plugin-staticmath
   GH_USER: 9p4
