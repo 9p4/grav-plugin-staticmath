@@ -1,5 +1,7 @@
 # v2.0.1
 ## 21-02-2025
+1. [](#new)
+    * Support "$math$" syntax for math
 1. [](#bugfix)
     * Always enable plugin to fix occasional non-renders when using a cache.
 1. [](#improved)
