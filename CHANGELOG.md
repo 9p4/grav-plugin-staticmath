@@ -1,5 +1,7 @@
 # v2.0.1
-## 30-10-2024
+## 21-02-2025
+1. [](#bugfix)
+    * Always enable plugin to fix occasional non-renders when using a cache.
 1. [](#improved)
     * Clean up documentation, blueprints, and language strings.
     * Clarify license with bundled font files
