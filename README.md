@@ -27,9 +27,7 @@ This will install the staticmath plugin into your `/user/plugins`-directory with
 
 To install the plugin manually, download the zip-version of this repository and unzip it under `/your/site/grav/user/plugins`. Then rename the folder to `staticmath`. You can find these files on [GitHub](https://github.com//grav-plugin-staticmath) or via [GetGrav.org](https://getgrav.org/downloads/plugins).
 
-You should now have all the plugin files under
-
-    /your/site/grav/user/plugins/staticmath
+You should now have all the plugin files under `/your/site/grav/user/plugins/staticmath`.
 	
 ### Admin Plugin
 
